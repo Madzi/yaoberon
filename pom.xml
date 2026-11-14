@@ -13,7 +13,7 @@
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://opensource.org/licenses/MIT</url>
+            <url>LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -28,6 +28,21 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+          <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-i18n</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-source</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-lexer</artifactId>
+            <version>${project.version}</version>
+          </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-bom</artifactId>
@@ -119,6 +134,8 @@
     </build>
     <modules>
         <module>yaoberon-i18n</module>
+        <module>yaoberon-source</module>
+        <module>yaoberon-lexer</module>
         <module>yaoberon-cli</module>
     </modules>
     <profiles>
