@@ -23,6 +23,22 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-i18n</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-source</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-lexer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-parser</artifactId>
+        </dependency>
+        <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>
@@ -33,11 +49,6 @@
         <dependency>
           <groupId>org.jline</groupId>
           <artifactId>jline-terminal-ffm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.madzi</groupId>
-            <artifactId>yaoberon-i18n</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
