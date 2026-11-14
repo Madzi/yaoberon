@@ -26,6 +26,19 @@
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>
+        <dependency>
+          <groupId>org.jline</groupId>
+          <artifactId>jline-terminal</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.jline</groupId>
+          <artifactId>jline-terminal-ffm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-i18n</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

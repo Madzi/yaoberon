@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Packaging with moditect `create-runtime-image` and jpackage-maven-plugin
 - `make prepare-release` target for runnable application build
 - Subcommand `yao lsp` via `LspCommand` with picocli `@Command` annotation
+- Module `yaoberon-i18n` with JPMS module `io.github.madzi.yaoberon.i18n` and `MessageService` interface
+- `MessageService.Key` nested interface and `BaseMessageService` implementation using `ResourceBundle`, API `text(Key)` / `text(Key, Object...)`
+- `yaoberon-cli` depends on `yaoberon-i18n`, uses `Messages` helper, `MessageKeys` enum, `i18n/messages.properties`, jline terminal output in `LspCommand` and `FormatCommand`
 
 ### Changed
 - Removed module-specific `<build>` section from `yaoberon-cli/pom.xml`, relying on parent pluginManagement

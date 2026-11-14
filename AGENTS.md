@@ -13,6 +13,7 @@
 - Build helper: makefile wraps ./mvnw: compile, test, package -DskipTests, build = clean verify, run = exec:java, clean.
 - Modules:
   - yaoberon-cli: CLI tools, picocli based. Entry: io.github.madzi.yaoberon.cli.Main, command name `yao`, JPMS module `io.github.madzi.yaoberon.cli`
+  - yaoberon-i18n: Internationalization support, JPMS module `io.github.madzi.yaoberon.i18n`, `MessageService` interface
   - Build config centralized in parent pom; modules do not declare own <build> unless needed
 - No README, lint config, CI, or instruction files verified yet.
 - When modules are added, re-inspect root pom.xml, module poms, and CI before adding concrete commands.
