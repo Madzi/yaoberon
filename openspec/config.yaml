@@ -1,0 +1,35 @@
+schema: spec-driven
+
+# Project context
+context: |
+  Intended scope: several tools around Oberon 07 compiler.
+  Tech stack: Java, Maven multimodule.
+  Root coordinates: io.github.madzi:yaoberon:1.0-SNAPSHOT, packaging pom.
+  Java target: 25 via maven.compiler.release.
+  Maven Wrapper: 3.9.16, ./mvnw available.
+  Managed BOMs/deps: slf4j-bom 2.1.0-alpha1, junit-bom 5.14.0, org.eclipse.lsp4j 0.24.0, info.picocli 4.7.7 with picocli-codegen annotation processor.
+  Build helper: makefile wraps ./mvnw: compile, test, package -DskipTests, build = clean verify, run = exec:java, clean.
+  Modules: none defined yet.
+  Repo currently has pom.xml, makefile, Maven Wrapper, .gitignore, CHANGELOG.md, AGENTS.md, docs/ (empty).
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

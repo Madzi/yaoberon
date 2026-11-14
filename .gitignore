@@ -1,0 +1,54 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+build.log
+.maven-dockerignore
+
+# Idea
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+*.launch
+.factorypath
+
+# NetBeans
+nb-configuration.xml
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Temp files
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environments & Secrets
+.env
+.env.local
+*.jks
+*.p12
+*.pem
+
+node_modules/
+out/
