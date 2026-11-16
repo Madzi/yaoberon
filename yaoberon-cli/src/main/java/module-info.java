@@ -3,6 +3,7 @@ module io.github.madzi.yaoberon.cli {
     requires io.github.madzi.yaoberon.source;
     requires io.github.madzi.yaoberon.lexer;
     requires io.github.madzi.yaoberon.parser;
+    requires io.github.madzi.yaoberon.format;
     requires info.picocli;
     requires org.jline.terminal;
     requires org.jline.terminal.ffm;

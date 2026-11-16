@@ -1,14 +1,11 @@
 package io.github.madzi.yaoberon.cli.command;
 
 import io.github.madzi.yaoberon.cli.Main;
-import io.github.madzi.yaoberon.cli.command.format.Formatter;
+import io.github.madzi.yaoberon.cli.command.format.FormatConfig;
+import io.github.madzi.yaoberon.format.FormatFailureException;
+import io.github.madzi.yaoberon.format.Formatter;
 import io.github.madzi.yaoberon.cli.i18n.MessageKeys;
-import io.github.madzi.yaoberon.lexer.Lexer;
-import io.github.madzi.yaoberon.lexer.ScanResult;
-import io.github.madzi.yaoberon.parser.ParseContext;
-import io.github.madzi.yaoberon.parser.ParseResult;
-import io.github.madzi.yaoberon.parser.Parser;
-import io.github.madzi.yaoberon.source.SourceFile;
+import io.github.madzi.yaoberon.format.FormatResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +18,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.Callable;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -33,18 +29,6 @@ import picocli.CommandLine.Spec;
 
 @Command(name = "format", description = "Format Oberon source", mixinStandardHelpOptions = false)
 public class FormatCommand implements Callable<Integer> {
-
-    public enum IndentType {
-        SPACES,
-        TABS;
-
-        public static IndentType from(String value) {
-            if (value == null) {
-                return null;
-            }
-            return IndentType.valueOf(value.toUpperCase(Locale.ROOT));
-        }
-    }
 
     @Parameters(index = "0", arity = "0..1", paramLabel = "<file|filter>", description = "Source file or filter for --all mode")
     String input;
@@ -99,7 +83,7 @@ public class FormatCommand implements Callable<Integer> {
                 return 0;
             }
 
-            IndentConfig indentConfig;
+            FormatConfig indentConfig;
             try {
                 indentConfig = resolveIndentConfig(indent, length);
             } catch (IllegalArgumentException e) {
@@ -135,12 +119,12 @@ public class FormatCommand implements Callable<Integer> {
                 out.print(formatted);
                 out.flush();
                 return 0;
-            } catch (FormatFailureException e) {
-                err.println(e.getMessage());
+            } catch (final FormatFailureException exception) {
+                err.println(exception.getMessage());
                 err.flush();
                 return 1;
-            } catch (Exception e) {
-                String msg = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
+            } catch (final IOException exception) {
+                String msg = exception.getMessage() == null ? exception.getClass().getSimpleName() : exception.getMessage();
                 err.println(msg);
                 err.flush();
                 return 1;
@@ -150,7 +134,7 @@ public class FormatCommand implements Callable<Integer> {
         }
     }
 
-    private int runAll(IndentConfig indentConfig, PrintWriter out, PrintWriter err) {
+    private int runAll(FormatConfig indentConfig, PrintWriter out, PrintWriter err) {
         if (input == null || input.isBlank()) {
             err.println(Main.I18N.text(MessageKeys.FORMAT_MISSING_FILTER));
             return 1;
@@ -174,9 +158,9 @@ public class FormatCommand implements Callable<Integer> {
                 String formatted = formatFile(file, indentConfig);
                 writeFileSafely(file, formatted);
                 out.println(Main.I18N.text(MessageKeys.FORMAT_FORMATTED_FILE, file));
-            } catch (Exception e) {
+            } catch (final IOException exception) {
                 anyFailed = true;
-                String msg = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
+                String msg = exception.getMessage() == null ? exception.getClass().getSimpleName() : exception.getMessage();
                 err.println(Main.I18N.text(MessageKeys.FORMAT_FILE_FAILED, file, msg));
             }
         }
@@ -230,15 +214,7 @@ public class FormatCommand implements Callable<Integer> {
         }
     }
 
-    private String formatFile(Path inputPath) throws IOException {
-        try {
-            return formatFile(inputPath, resolveIndentConfig(indent, length));
-        } catch (IllegalArgumentException e) {
-            throw new FormatFailureException(e.getMessage(), e);
-        }
-    }
-
-    private String formatFile(Path inputPath, IndentConfig indentConfig) throws IOException {
+    private String formatFile(Path inputPath, FormatConfig indentConfig) throws IOException {
         if (!Files.exists(inputPath)) {
             throw new FormatFailureException(Main.I18N.text(MessageKeys.FORMAT_INPUT_NOT_FOUND, inputPath));
         }
@@ -247,20 +223,13 @@ public class FormatCommand implements Callable<Integer> {
         }
         String content = Files.readString(inputPath, StandardCharsets.UTF_8);
         try {
-            SourceFile source = new InMemorySourceFile(inputPath.toUri().toString(), content);
-            Lexer lexer = Lexer.create();
-            ScanResult scan = lexer.tokenizeAll(source);
-            ParseContext context = new ParseContext(source, scan.tokens());
-            Parser parser = Parser.create();
-            ParseResult result = parser.parse(context);
-            if (result == null || result.root() == null) {
-                throw new FormatFailureException(Main.I18N.text(MessageKeys.FORMAT_PARSE_FAILED, inputPath));
-            }
-            if (result.syntaxErrors() != null && !result.syntaxErrors().isEmpty()) {
-                throw new FormatFailureException(Main.I18N.text(MessageKeys.FORMAT_SYNTAX_ERRORS, inputPath));
-            }
-            Formatter formatter = new Formatter(indentConfig.indentStep());
-            return formatter.format(source, result.root());
+            Formatter formatter = Formatter.create(indentConfig.indent());
+            FormatResult fres = formatter.format(content);
+            return switch (fres) {
+                case FormatResult.Successful sres -> sres.formatted();
+                case FormatResult.ParseFailed _ -> throw new FormatFailureException(Main.I18N.text(MessageKeys.FORMAT_PARSE_FAILED, inputPath));
+                case FormatResult.SyntaxErrors _ -> throw new FormatFailureException(Main.I18N.text(MessageKeys.FORMAT_SYNTAX_ERRORS, inputPath));
+            };
         } catch (FormatFailureException e) {
             throw e;
         } catch (RuntimeException e) {
@@ -277,58 +246,14 @@ public class FormatCommand implements Callable<Integer> {
         Files.writeString(target, formatted, StandardCharsets.UTF_8);
     }
 
-    private IndentConfig resolveIndentConfig(String indentValue, Integer lengthValue) {
-        IndentType type = IndentType.SPACES;
-        if (indentValue != null) {
-            try {
-                type = IndentType.from(indentValue);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(Main.I18N.text(MessageKeys.FORMAT_INVALID_INDENT_TYPE, indentValue));
-            }
-            if (type == null) {
-                throw new IllegalArgumentException(Main.I18N.text(MessageKeys.FORMAT_INVALID_INDENT_TYPE, indentValue));
-            }
+    private FormatConfig resolveIndentConfig(String indentValue, Integer lengthValue) {
+        var builder = FormatConfig.builder();
+        if (null != indentValue) {
+            builder.type(indentValue);
         }
-        int len = lengthValue == null ? 2 : lengthValue;
-        if (type == IndentType.SPACES) {
-            if (len < 1 || len > 8) {
-                throw new IllegalArgumentException(Main.I18N.text(MessageKeys.FORMAT_INVALID_INDENT_LENGTH_SPACES, len));
-            }
-            return new IndentConfig(" ".repeat(len));
-        } else {
-            if (len < 1 || len > 2) {
-                throw new IllegalArgumentException(Main.I18N.text(MessageKeys.FORMAT_INVALID_INDENT_LENGTH_TABS, len));
-            }
-            return new IndentConfig("\t".repeat(len));
+        if (null != lengthValue) {
+            builder.count(lengthValue);
         }
-    }
-
-    private record IndentConfig(String indentStep) {}
-
-    private record InMemorySourceFile(String uri, String content) implements SourceFile {
-        @Override
-        public int version() {
-            return 1;
-        }
-
-        @Override
-        public CharSequence text() {
-            return content;
-        }
-
-        @Override
-        public int length() {
-            return content.length();
-        }
-    }
-
-    private static class FormatFailureException extends RuntimeException {
-        FormatFailureException(String message) {
-            super(message);
-        }
-
-        FormatFailureException(String message, Throwable cause) {
-            super(message, cause);
-        }
+        return builder.build();
     }
 }

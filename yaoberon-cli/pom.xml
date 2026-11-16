@@ -39,6 +39,10 @@
             <artifactId>yaoberon-parser</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-format</artifactId>
+        </dependency>
+        <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>

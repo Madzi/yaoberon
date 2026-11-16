@@ -1,20 +1,45 @@
-package io.github.madzi.yaoberon.cli.command.format;
+package io.github.madzi.yaoberon.format.internal;
 
+import io.github.madzi.yaoberon.format.FormatFailureException;
+import io.github.madzi.yaoberon.format.FormatResult;
+import io.github.madzi.yaoberon.format.Formatter;
+import io.github.madzi.yaoberon.lexer.Lexer;
+import io.github.madzi.yaoberon.lexer.ScanResult;
 import io.github.madzi.yaoberon.lexer.token.Token;
 import io.github.madzi.yaoberon.lexer.token.TokenKind;
 import io.github.madzi.yaoberon.lexer.token.Trivia;
+import io.github.madzi.yaoberon.parser.ParseContext;
+import io.github.madzi.yaoberon.parser.ParseResult;
+import io.github.madzi.yaoberon.parser.Parser;
 import io.github.madzi.yaoberon.parser.cst.GreenNode;
 import io.github.madzi.yaoberon.parser.cst.SyntaxKind;
 import io.github.madzi.yaoberon.source.SourceFile;
 import io.github.madzi.yaoberon.source.Span;
 
-public class Formatter {
+public class BaseFormatter implements Formatter {
+    
 
     private final String indentStep;
     private boolean isAtStartOfLine = true;
 
-    public Formatter(final String indentStep) {
+    public BaseFormatter(final String indentStep) {
         this.indentStep = indentStep;
+    }
+
+    @Override
+    public FormatResult format(final String text) {
+        SourceFile source = SourceFile.create("mem://temporal", 0, text);
+        Lexer lexer = Lexer.create();
+        ScanResult scan = lexer.tokenizeAll(source);
+        Parser parser = Parser.create();
+        ParseResult parse = parser.parse(new ParseContext(source, scan.tokens()));
+        if (null == parse || null == parse.root()) {
+            return new FormatResult.ParseFailed();
+        }
+        if (null != parse.syntaxErrors() && !parse.syntaxErrors().isEmpty()) {
+            return new FormatResult.SyntaxErrors();
+        }
+        return new FormatResult.Successful(format(source, parse.root()));
     }
 
     public String format(final SourceFile source, final GreenNode root) {

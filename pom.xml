@@ -49,6 +49,16 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.github.madzi</groupId>
+                <artifactId>yaoberon-format</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.madzi</groupId>
+                <artifactId>yaoberon-lsp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-bom</artifactId>
                 <version>2.1.0-alpha1</version>
@@ -142,6 +152,8 @@
         <module>yaoberon-source</module>
         <module>yaoberon-lexer</module>
         <module>yaoberon-parser</module>
+        <module>yaoberon-format</module>
+        <module>yaoberon-lsp</module>
         <module>yaoberon-cli</module>
     </modules>
     <profiles>
