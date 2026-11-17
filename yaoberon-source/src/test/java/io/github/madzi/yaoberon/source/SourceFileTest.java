@@ -36,5 +36,19 @@ class SourceFileTest {
         // Test single character
         Span singleSpan = new Span(5, 1); // "("
         assertEquals("(", sourceFile.piece(singleSpan));
+
+        // Test empty slice
+        Span emptySpan = new Span(2, 0);
+        assertEquals("", sourceFile.piece(emptySpan));
+    }
+
+    @Test
+    void testEmptySourceFile() {
+        SourceFile emptyFile = SourceFile.create("file:///empty.ob", 0, "");
+        assertEquals("file:///empty.ob", emptyFile.uri());
+        assertEquals(0, emptyFile.version());
+        assertEquals("", emptyFile.text());
+        assertEquals(0, emptyFile.length());
+        assertEquals("", emptyFile.piece(new Span(0, 0)));
     }
 }

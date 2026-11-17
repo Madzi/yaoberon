@@ -24,4 +24,16 @@ class SpanTest {
         Span span2 = new Span(-5, 5);
         assertEquals(0, span2.end());
     }
+
+    @Test
+    void testSpanEqualsHashCodeToString() {
+        Span s1 = new Span(10, 20);
+        Span s2 = new Span(10, 20);
+        Span s3 = new Span(10, 25);
+
+        assertEquals(s1, s2);
+        assertEquals(s1.hashCode(), s2.hashCode());
+        assertNotEquals(s1, s3);
+        assertNotNull(s1.toString());
+    }
 }

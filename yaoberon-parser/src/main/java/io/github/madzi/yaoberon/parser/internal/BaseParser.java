@@ -82,7 +82,7 @@ public class BaseParser implements DetailedParser {
         final var parse = new GreenNodeBuilder(context);
         parse.expected(this::parseIdentDef);
         parse.expected(TokenKind.EQL, SyntaxKind.OPERATOR, "Expected '='");
-        parse.expected(this::parseStrucType);
+        parse.expected(this::parseType);
         return parse.node(SyntaxKind.TYPE_DECLARATION);
     }
 
@@ -285,7 +285,7 @@ public class BaseParser implements DetailedParser {
         if (context.check(TokenKind.REAL)) {
             return parseReal(context);
         }
-        if (context.check(TokenKind.STRING)) {
+        if (context.inList(TokenKind.STRING, TokenKind.CHAR)) {
             return parseString(context);
         }
         if (context.check(TokenKind.NIL)) {
@@ -429,7 +429,7 @@ public class BaseParser implements DetailedParser {
             parse.optional(TokenKind.LPAREN, this::parseActualParameters);
             return parse.node(SyntaxKind.PROCEDURE_CALL_STATEMENT);
         }
-        return context.consume(SyntaxKind.EMPTY);
+        return GreenNode.Composite.create(SyntaxKind.EMPTY, java.util.List.of());
     }
 
     @Override
@@ -452,12 +452,12 @@ public class BaseParser implements DetailedParser {
     @Override
     public GreenNode parseStatementSequence(final ParseContext context) {
         final var parse = new GreenNodeBuilder(context);
-        if (!context.check(TokenKind.SEMICOLON)) {
+        if (!context.check(TokenKind.SEMICOLON) && !context.inList(TokenKind.END, TokenKind.ELSIF, TokenKind.ELSE, TokenKind.UNTIL, TokenKind.RETURN) && !context.isAtEnd()) {
             parse.expected(this::parseStatement);
         }
         while (context.check(TokenKind.SEMICOLON)) {
             parse.expected(SyntaxKind.PUNCTUATION);
-            if (context.inList(TokenKind.END, TokenKind.ELSIF, TokenKind.ELSE, TokenKind.UNTIL, TokenKind.RETURN)) {
+            if (context.inList(TokenKind.END, TokenKind.ELSIF, TokenKind.ELSE, TokenKind.UNTIL, TokenKind.RETURN) || context.isAtEnd()) {
                 break;
             }
             if (!context.check(TokenKind.SEMICOLON)) {
@@ -527,7 +527,10 @@ public class BaseParser implements DetailedParser {
     public GreenNode parseLabelRange(final ParseContext context) {
         final var parse = new GreenNodeBuilder(context);
         parse.expected(this::parseLabel);
-        parse.optional(TokenKind.UPTO, this::parseLabel);
+        if (context.check(TokenKind.UPTO)) {
+            parse.expected(SyntaxKind.PUNCTUATION);
+            parse.expected(this::parseLabel);
+        }
         return parse.node(SyntaxKind.LABEL_RANGE);
     }
 
@@ -536,7 +539,7 @@ public class BaseParser implements DetailedParser {
         if (context.check(TokenKind.INT)) {
             return parseInt(context);
         }
-        if (context.check(TokenKind.STRING)) {
+        if (context.inList(TokenKind.STRING, TokenKind.CHAR)) {
             return parseString(context);
         }
         if (context.check(TokenKind.IDENT)) {
@@ -582,7 +585,10 @@ public class BaseParser implements DetailedParser {
         parse.expected(this::parseExpression);
         parse.expected(TokenKind.TO, SyntaxKind.KEYWORD, "Expected 'TO' in FOR statement");
         parse.expected(this::parseExpression);
-        parse.optional(TokenKind.BY, this::parseConstExpression);
+        if (context.check(TokenKind.BY)) {
+            parse.keyword(TokenKind.BY);
+            parse.expected(this::parseConstExpression);
+        }
         parse.keyword(TokenKind.DO);
         parse.expected(this::parseStatementSequence);
         parse.keyword(TokenKind.END);

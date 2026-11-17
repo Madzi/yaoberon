@@ -65,37 +65,30 @@ public class BaseLexer implements Lexer {
                 trivias = new ArrayList<>();
             }
             else if (Character.isDigit(ch)) {
-                int numStart = idx;
                 while (idx < limit && isHexDigit(fullText.charAt(idx))) {
                     idx++;
                 }
                 if (idx < limit && (fullText.charAt(idx) == 'X' || fullText.charAt(idx) == 'x')) {
                     idx++;
-                    tokens.add(new Token(TokenKind.STRING, new Span(start, idx - start), trivias));
+                    tokens.add(new Token(TokenKind.CHAR, new Span(start, idx - start), trivias));
                     trivias = new ArrayList<>();
                 }
                 else if (idx < limit && fullText.charAt(idx) == '.' && isNextDigit(fullText, idx, limit)) {
-                    if (idx + 1 < limit && fullText.charAt(idx + 1) == '.') {
-                        idx = numStart;
-                        tokens.add(new Token(TokenKind.REAL, new Span(start, numStart - start), trivias));
-                        trivias = new ArrayList<>();
-                    } else {
+                    idx++;
+                    while (idx < limit && Character.isDigit(fullText.charAt(idx))) {
                         idx++;
+                    }
+                    if (idx < limit && (fullText.charAt(idx) == 'E' || fullText.charAt(idx) == 'D' || fullText.charAt(idx) == 'e' || fullText.charAt(idx) == 'd')) {
+                        idx++;
+                        if (idx < limit && (fullText.charAt(idx) == '+' || fullText.charAt(idx) == '-')) {
+                            idx++;
+                        }
                         while (idx < limit && Character.isDigit(fullText.charAt(idx))) {
                             idx++;
                         }
-                        if (idx < limit && (fullText.charAt(idx) == 'E' || fullText.charAt(idx) == 'D' || fullText.charAt(idx) == 'e' || fullText.charAt(idx) == 'd')) {
-                            idx++;
-                            if (idx < limit && (fullText.charAt(idx) == '+' || fullText.charAt(idx) == '-')) {
-                                idx++;
-                            }
-                            while (idx < limit && Character.isDigit(fullText.charAt(idx))) {
-                                idx++;
-                            }
-                        }
-                        tokens.add(new Token(TokenKind.REAL, new Span(start, idx - start), trivias));
-                        trivias = new ArrayList<>();
                     }
+                    tokens.add(new Token(TokenKind.REAL, new Span(start, idx - start), trivias));
+                    trivias = new ArrayList<>();
                 }
                 else {
                     if (idx < limit && (fullText.charAt(idx) == 'H' || fullText.charAt(idx) == 'h')) {
@@ -113,33 +106,43 @@ public class BaseLexer implements Lexer {
             else if (ch == '"') {
                 char quote = ch;
                 idx++;
+                int contentStart = idx;
                 while (idx < limit && fullText.charAt(idx) != quote && fullText.charAt(idx) != '\n' && fullText.charAt(idx) != '\r') {
                     idx++;
                 }
+                int contentLen = idx - contentStart;
                 if (idx < limit && fullText.charAt(idx) == quote) {
                     idx++;
                 }
-                tokens.add(new Token(TokenKind.STRING, new Span(start, idx - start), trivias));
+                TokenKind kind = (contentLen == 1) ? TokenKind.CHAR : TokenKind.STRING;
+                tokens.add(new Token(kind, new Span(start, idx - start), trivias));
                 trivias = new ArrayList<>();
             } else if (ch == '$') {
                 idx++;
+                int contentStart = idx;
                 while (idx < limit && fullText.charAt(idx) != '$') {
                     idx++;
                 }
+                int contentLen = idx - contentStart;
                 if (idx < limit && fullText.charAt(idx) == '$') {
                     idx++;
                 }
-                tokens.add(new Token(TokenKind.STRING, new Span(start, idx - start), trivias));
+                TokenKind kind = (contentLen == 1) ? TokenKind.CHAR : TokenKind.STRING;
+                tokens.add(new Token(kind, new Span(start, idx - start), trivias));
                 trivias = new ArrayList<>();
             } else if (ch == '\'') {
+                char quote = ch;
                 idx++;
-                while (idx < limit && fullText.charAt(idx) != '\'' && fullText.charAt(idx) != '\n' && fullText.charAt(idx) != '\r') {
+                int contentStart = idx;
+                while (idx < limit && fullText.charAt(idx) != quote && fullText.charAt(idx) != '\n' && fullText.charAt(idx) != '\r') {
                     idx++;
                 }
-                if (idx < limit && fullText.charAt(idx) == '\'') {
+                int contentLen = idx - contentStart;
+                if (idx < limit && fullText.charAt(idx) == quote) {
                     idx++;
                 }
-                tokens.add(new Token(TokenKind.STRING, new Span(start, idx - start), trivias));
+                TokenKind kind = (contentLen == 1) ? TokenKind.CHAR : TokenKind.STRING;
+                tokens.add(new Token(kind, new Span(start, idx - start), trivias));
                 trivias = new ArrayList<>();
             }
             else if (ch == '=') {
@@ -250,9 +253,9 @@ public class BaseLexer implements Lexer {
                 idx++;
                 tokens.add(new Token(TokenKind.BAR, oneChar(start), trivias));
                 trivias = new ArrayList<>();
-            } else if (ch == '7' && idx + 2 < limit && fullText.charAt(idx + 1) == 'F' && fullText.charAt(idx + 2) == 'X') {
-                idx += 3;
-                tokens.add(new Token(TokenKind.UPTO, new Span(start, 3), trivias));
+            } else if (ch == 0x7F) {
+                idx++;
+                tokens.add(new Token(TokenKind.UPTO, oneChar(start), trivias));
                 trivias = new ArrayList<>();
             } else {
                 idx++;
