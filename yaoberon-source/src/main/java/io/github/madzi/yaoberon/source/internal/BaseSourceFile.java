@@ -1,6 +1,7 @@
 package io.github.madzi.yaoberon.source.internal;
 
 import io.github.madzi.yaoberon.source.SourceFile;
+import io.github.madzi.yaoberon.source.Span;
 
 public class BaseSourceFile implements SourceFile {
 
@@ -27,6 +28,11 @@ public class BaseSourceFile implements SourceFile {
     @Override
     public CharSequence text() {
         return content;
+    }
+
+    @Override
+    public CharSequence piece(final Span span) {
+        return content.subSequence(span.start(), span.end());
     }
 
     @Override

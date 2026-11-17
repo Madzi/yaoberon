@@ -1,6 +1,8 @@
 package io.github.madzi.yaoberon.lsp.service.internal;
 
 import io.github.madzi.yaoberon.source.SourceFile;
+import io.github.madzi.yaoberon.source.Span;
+
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.lsp4j.Position;
@@ -36,6 +38,19 @@ public class LspSourceFile implements SourceFile {
     @Override
     public int length() {
         return delegate.length();
+    }
+
+    @Override
+    public CharSequence piece(final Span span) {
+        return delegate.piece(span);
+    }
+
+    public int nextNewLine(final int offset) {
+        int idx = 0;
+        while (idx < lineStarts.length && offset > lineStarts[idx]) {
+            idx++;
+        }
+        return lineStarts[idx];
     }
 
     public LspSourceFile applyEdits(final int newVersion, final List<TextEdit> edits) {

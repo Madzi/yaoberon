@@ -1,11 +1,18 @@
 package io.github.madzi.yaoberon.lsp;
 
 import io.github.madzi.yaoberon.lsp.service.YaOberonWorkspaceService;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
+import org.eclipse.lsp4j.SemanticTokenModifiers;
+import org.eclipse.lsp4j.SemanticTokenTypes;
+import org.eclipse.lsp4j.SemanticTokensLegend;
+import org.eclipse.lsp4j.SemanticTokensWithRegistrationOptions;
 import org.eclipse.lsp4j.ServerCapabilities;
+import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.LanguageClientAware;
 import org.eclipse.lsp4j.services.LanguageServer;
@@ -26,6 +33,10 @@ public class YaOberonLanguageServer implements LanguageServer, LanguageClientAwa
     @Override
     public CompletableFuture<InitializeResult> initialize(final InitializeParams params) {
         ServerCapabilities capabilities = new ServerCapabilities();
+        capabilities.setTextDocumentSync(TextDocumentSyncKind.Full);
+        capabilities.setSemanticTokensProvider(semanticTokensOptions());
+        capabilities.setFoldingRangeProvider(true);
+        capabilities.setDocumentFormattingProvider(true);
         return CompletableFuture.completedFuture(new InitializeResult(capabilities));
     }
 
@@ -56,5 +67,19 @@ public class YaOberonLanguageServer implements LanguageServer, LanguageClientAwa
 
     public Optional<LanguageClient> client() {
         return Optional.ofNullable(client);
+    }
+
+    private SemanticTokensWithRegistrationOptions semanticTokensOptions() {
+        return new SemanticTokensWithRegistrationOptions(new SemanticTokensLegend(List.of( // TODO: think about map for token types
+            SemanticTokenTypes.Keyword,
+            SemanticTokenTypes.Variable,
+            SemanticTokenTypes.Number,
+            SemanticTokenTypes.Operator,
+            SemanticTokenTypes.String,
+            SemanticTokenTypes.Comment,
+            SemanticTokenTypes.Type,
+            SemanticTokenTypes.Function,
+            SemanticTokenTypes.Namespace
+        ), List.of()), true);
     }
 }

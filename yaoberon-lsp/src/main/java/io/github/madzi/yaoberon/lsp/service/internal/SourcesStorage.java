@@ -1,6 +1,7 @@
 package io.github.madzi.yaoberon.lsp.service.internal;
 
 import io.github.madzi.yaoberon.lexer.Lexer;
+import io.github.madzi.yaoberon.lexer.ScanResult;
 import io.github.madzi.yaoberon.parser.ParseContext;
 import io.github.madzi.yaoberon.parser.ParseResult;
 import io.github.madzi.yaoberon.parser.Parser;
@@ -48,8 +49,12 @@ public class SourcesStorage {
         return Optional.ofNullable(sources.get(uri));
     }
 
+    public ScanResult scan(final LspSourceFile source) {
+        return lexer.tokenizeAll(source);
+    }
+
     public ParseResult parse(final LspSourceFile source) {
-        var scanResult = lexer.tokenizeAll(source);
+        var scanResult = scan(source);
         return parser.parse(new ParseContext(source, scanResult.tokens()));
     }
 
