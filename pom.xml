@@ -21,10 +21,19 @@
         <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jacoco.version>0.8.16</jacoco.version>
         <jpackage.plugin.version>1.8.0</jpackage.plugin.version>
+        <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
+        <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <maven.jlink.plugin.version>3.3.0</maven.jlink.plugin.version>
         <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
         <maven.failsafe.plugin.version>3.5.4</maven.failsafe.plugin.version>
+        <moditect.version>1.3.0.Final</moditect.version>
+        <version.org.slf4j>2.1.0-alpha1</version.org.slf4j>
+        <version.junit>5.14.0</version.junit>
+        <version.eclipse-lsp4j>0.24.0</version.eclipse-lsp4j>
+        <version.picocli>4.7.7</version.picocli>
+        <version.jline>4.7.0</version.jline>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -66,36 +75,36 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-bom</artifactId>
-                <version>2.1.0-alpha1</version>
+                <version>${version.org.slf4j}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>5.14.0</version>
+                <version>${version.junit}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>org.eclipse.lsp4j</groupId>
                 <artifactId>org.eclipse.lsp4j</artifactId>
-                <version>0.24.0</version>
+                <version>${version.eclipse-lsp4j}</version>
             </dependency>
             <dependency>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli</artifactId>
-                <version>4.7.7</version>
+                <version>${version.picocli}</version>
             </dependency>
             <dependency>
                 <groupId>org.jline</groupId>
                 <artifactId>jline-terminal</artifactId>
-                <version>4.7.0</version>
+                <version>${version.jline}</version>
             </dependency>
             <dependency>
                 <groupId>org.jline</groupId>
                 <artifactId>jline-terminal-ffm</artifactId>
-                <version>4.7.0</version>
+                <version>${version.jline}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -105,19 +114,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.16.0</version>
-                    <configuration>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>info.picocli</groupId>
-                                <artifactId>picocli-codegen</artifactId>
-                                <version>4.7.7</version>
-                            </path>
-                        </annotationProcessorPaths>
-                        <compilerArgs>
-                            <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
-                        </compilerArgs>
-                    </configuration>
+                    <version>${maven.compiler.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -142,7 +139,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${maven.jar.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.panteleyev</groupId>
@@ -185,6 +182,65 @@
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>chekcs</id>
+            <build>
+                <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                      <id>jacoco-check</id>
+                      <goals>
+                        <goal>check</goal>
+                      </goals>
+                      <configuration>
+                        <rules>
+                          <rule>
+                            <element>PACKAGE</element>
+                            <limits>
+                              <limit>
+                                <counter>LINE</counter>
+                                <value>COVEREDRATIO</value>
+                                <minimum>0.9</minimum>
+                              </limit>
+                            </limits>
+                          </rule>
+                        </rules>
+                      </configuration>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <formats>
+                                <format>XML</format>
+                                <format>HTML</format>
+                                <format>CSV</format>
+                            </formats>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>                    
                 </plugins>
             </build>
         </profile>

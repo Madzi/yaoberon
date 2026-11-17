@@ -15,6 +15,7 @@
     <description>Representation of Source files</description>
 
     <properties>
+        <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
