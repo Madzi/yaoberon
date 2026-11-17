@@ -25,4 +25,20 @@ class ScanResultTest {
         assertEquals(same.hashCode(), result.hashCode());
         assertNotNull(result.toString());
     }
+
+    @Test
+    void testDefensiveCopy() {
+        Token t = new Token(TokenKind.EOT, new Span(0, 0), List.of());
+        java.util.ArrayList<Token> mutable = new java.util.ArrayList<>();
+        mutable.add(t);
+
+        ScanResult result = new ScanResult(mutable, LexerState.INITIAL, 0);
+        mutable.clear();
+        assertEquals(1, result.tokens().size());
+
+        assertThrows(UnsupportedOperationException.class, () -> result.tokens().add(t));
+
+        ScanResult nullTokens = new ScanResult(null, LexerState.INITIAL, 0);
+        assertTrue(nullTokens.tokens().isEmpty());
+    }
 }

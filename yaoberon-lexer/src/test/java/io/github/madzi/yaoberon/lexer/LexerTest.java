@@ -122,6 +122,25 @@ class LexerTest {
     }
 
     @Test
+    void testInvalidNumbers() {
+        List<Token> tokens = tokenize("123AB 0AF 9A 1.2E 1.2E+ 1.2E- 1.2D 1.2d+");
+        assertEquals(9, tokens.size());
+        for (int i = 0; i < 8; i++) {
+            assertEquals(TokenKind.ERROR, tokens.get(i).kind(), "Expected ERROR at index " + i);
+        }
+    }
+
+    @Test
+    void testInvalidRealWithHexInIntegerPart() {
+        List<Token> tokens = tokenize("1A.2");
+        assertEquals(4, tokens.size());
+        assertEquals(TokenKind.ERROR, tokens.get(0).kind()); // 1A
+        assertEquals(TokenKind.PERIOD, tokens.get(1).kind()); // .
+        assertEquals(TokenKind.INT, tokens.get(2).kind()); // 2
+        assertEquals(TokenKind.EOT, tokens.get(3).kind());
+    }
+
+    @Test
     void testIntegerFollowedByUpTo() {
         List<Token> tokens = tokenize("1..10");
         assertEquals(4, tokens.size()); // INT, UPTO, INT, EOT

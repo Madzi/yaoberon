@@ -65,7 +65,12 @@ public class BaseLexer implements Lexer {
                 trivias = new ArrayList<>();
             }
             else if (Character.isDigit(ch)) {
+                boolean hasHexLetters = false;
                 while (idx < limit && isHexDigit(fullText.charAt(idx))) {
+                    char c = fullText.charAt(idx);
+                    if ((c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) {
+                        hasHexLetters = true;
+                    }
                     idx++;
                 }
                 if (idx < limit && (fullText.charAt(idx) == 'X' || fullText.charAt(idx) == 'x')) {
@@ -73,33 +78,45 @@ public class BaseLexer implements Lexer {
                     tokens.add(new Token(TokenKind.CHAR, new Span(start, idx - start), trivias));
                     trivias = new ArrayList<>();
                 }
-                else if (idx < limit && fullText.charAt(idx) == '.' && isNextDigit(fullText, idx, limit)) {
+                else if (!hasHexLetters && idx < limit && fullText.charAt(idx) == '.' && isNextDigit(fullText, idx, limit)) {
                     idx++;
                     while (idx < limit && Character.isDigit(fullText.charAt(idx))) {
                         idx++;
                     }
+                    boolean error = false;
                     if (idx < limit && (fullText.charAt(idx) == 'E' || fullText.charAt(idx) == 'D' || fullText.charAt(idx) == 'e' || fullText.charAt(idx) == 'd')) {
                         idx++;
                         if (idx < limit && (fullText.charAt(idx) == '+' || fullText.charAt(idx) == '-')) {
                             idx++;
                         }
+                        int expDigitsStart = idx;
                         while (idx < limit && Character.isDigit(fullText.charAt(idx))) {
                             idx++;
                         }
+                        if (idx == expDigitsStart) {
+                            error = true;
+                        }
                     }
+                    TokenKind kind = error ? TokenKind.ERROR : TokenKind.REAL;
+                    tokens.add(new Token(kind, new Span(start, idx - start), trivias));
+                    trivias = new ArrayList<>();
+                }
+                else if (idx < limit && (fullText.charAt(idx) == 'H' || fullText.charAt(idx) == 'h')) {
+                    idx++;
+                    tokens.add(new Token(TokenKind.INT, new Span(start, idx - start), trivias));
+                    trivias = new ArrayList<>();
+                }
+                else if (idx < limit && (fullText.charAt(idx) == 'R' || fullText.charAt(idx) == 'r')) {
+                    idx++;
                     tokens.add(new Token(TokenKind.REAL, new Span(start, idx - start), trivias));
                     trivias = new ArrayList<>();
                 }
+                else if (hasHexLetters) {
+                    tokens.add(new Token(TokenKind.ERROR, new Span(start, idx - start), trivias));
+                    trivias = new ArrayList<>();
+                }
                 else {
-                    if (idx < limit && (fullText.charAt(idx) == 'H' || fullText.charAt(idx) == 'h')) {
-                        idx++;
-                        tokens.add(new Token(TokenKind.INT, new Span(start, idx - start), trivias));
-                    } else if (idx < limit && (fullText.charAt(idx) == 'R' || fullText.charAt(idx) == 'r')) {
-                        idx++;
-                        tokens.add(new Token(TokenKind.REAL, new Span(start, idx - start), trivias));
-                    } else {
-                        tokens.add(new Token(TokenKind.INT, new Span(start, idx - start), trivias));
-                    }
+                    tokens.add(new Token(TokenKind.INT, new Span(start, idx - start), trivias));
                     trivias = new ArrayList<>();
                 }
             }
