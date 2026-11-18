@@ -1,4 +1,4 @@
-package io.github.madzi.yaoberon.parser.internal;
+ackage io.github.madzi.yaoberon.parser.internal;
 
 import io.github.madzi.yaoberon.parser.ParseContext;
 import io.github.madzi.yaoberon.parser.Parser;
