@@ -1,11 +1,11 @@
-ackage io.github.madzi.yaoberon.parser.internal;
+package io.github.madzi.yaoberon.parser.internal;
 
 import io.github.madzi.yaoberon.parser.ParseContext;
 import io.github.madzi.yaoberon.parser.Parser;
 import io.github.madzi.yaoberon.parser.cst.GreenNode;
 
 public interface DetailedParser extends Parser {
-    
+
     // digit  =   "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9".
     // hexDigit  =  digit | "A" | "B" | "C" | "D" | "E" | "F".
     // ident  =  letter {letter | digit}.

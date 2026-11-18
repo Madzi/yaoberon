@@ -4,7 +4,7 @@ import io.github.madzi.yaoberon.parser.cst.SyntaxKind;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ParseIdent extends AbstractDetailedParserSetup {
+public class ParseIdentTest extends AbstractDetailedParserSetup {
     
     @Test
     void testParseCorrectIdent() {

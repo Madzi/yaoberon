@@ -2,13 +2,14 @@ package io.github.madzi.yaoberon.parser.internal;
 
 import io.github.madzi.yaoberon.lexer.Lexer;
 import io.github.madzi.yaoberon.parser.ParseContext;
+import io.github.madzi.yaoberon.parser.Parser;
 import io.github.madzi.yaoberon.parser.cst.GreenNode;
 import io.github.madzi.yaoberon.source.SourceFile;
 
 class AbstractDetailedParserSetup {
 
     protected Lexer lexer = Lexer.create();
-    protected DetailedParser parser = DetailedParser.create();
+    protected DetailedParser parser = (DetailedParser) Parser.create();
 
     protected ParseContext context(final String code) {
         var source = SourceFile.create("mem://test", 0, code);

@@ -326,7 +326,7 @@ public class BaseParser implements DetailedParser {
     @Override
     public GreenNode parseDesignator(final ParseContext context) {
         final var parse = new GreenNodeBuilder(context);
-        parse.expected(this::parseQualident);
+        parse.expected(this::parseIdent);
         while (context.inList(TokenKind.PERIOD, TokenKind.LBRAK, TokenKind.ARROW)) {
             parse.expected(this::parseSelector);
         }
