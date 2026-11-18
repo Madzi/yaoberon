@@ -52,7 +52,7 @@ public interface DetailedParser extends Parser {
     // ProcedureType  =  "PROCEDURE" [FormalParameters].
     GreenNode parseProcedureType(ParseContext context);
     // VariableDeclaration  =  IdentList ":" type.
-    GreenNode parseVariableDeclartion(ParseContext context);
+    GreenNode parseVariableDeclaration(ParseContext context);
     // expression  =  SimpleExpression [relation SimpleExpression].
     GreenNode parseExpression(ParseContext context);
     // relation  =  "=" | "#" | "<" | "<=" | ">" | ">=" | "IN" | "IS".

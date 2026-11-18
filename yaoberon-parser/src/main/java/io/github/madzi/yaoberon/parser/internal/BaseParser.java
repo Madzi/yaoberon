@@ -205,7 +205,7 @@ public class BaseParser implements DetailedParser {
     }
 
     @Override
-    public GreenNode parseVariableDeclartion(final ParseContext context) {
+    public GreenNode parseVariableDeclaration(final ParseContext context) {
         final var parse = new GreenNodeBuilder(context);
         parse.expected(this::parseIdentList);
         parse.punctuation(TokenKind.COLON, ":");
@@ -672,7 +672,7 @@ public class BaseParser implements DetailedParser {
         final var parse = new GreenNodeBuilder(context);
         parse.keyword(TokenKind.VAR);
         while (context.check(TokenKind.IDENT)) {
-            parse.expected(this::parseVariableDeclartion);
+            parse.expected(this::parseVariableDeclaration);
             parse.punctuation(TokenKind.SEMICOLON, ";");
         }
         return parse.node(SyntaxKind.VAR_SECTION);

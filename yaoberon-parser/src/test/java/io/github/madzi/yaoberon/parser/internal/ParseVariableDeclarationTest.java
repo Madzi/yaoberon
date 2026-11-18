@@ -9,7 +9,7 @@ public class ParseVariableDeclarationTest extends AbstractDetailedParserSetup {
     @Test
     void testParseVariableDeclaration() {
         var context = context("a: INTEGER");
-        var node = parser.parseVariableDeclartion(context);
+        var node = parser.parseVariableDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.VARIABLE_DECLARATION, node.kind());
         Assertions.assertTrue(context.errors().isEmpty());
