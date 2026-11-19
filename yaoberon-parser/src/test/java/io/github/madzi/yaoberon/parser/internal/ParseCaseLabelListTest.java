@@ -12,6 +12,6 @@ public class ParseCaseLabelListTest extends AbstractDetailedParserSetup {
         var node = parser.parseCaseLabelList(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.CASE_LABEL_LIST, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

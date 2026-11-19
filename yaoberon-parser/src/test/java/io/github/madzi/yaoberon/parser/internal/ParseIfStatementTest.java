@@ -12,6 +12,6 @@ public class ParseIfStatementTest extends AbstractDetailedParserSetup {
         var node = parser.parseIfStatement(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.IF_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

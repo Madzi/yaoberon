@@ -12,6 +12,6 @@ public class ParseAssignmentTest extends AbstractDetailedParserSetup {
         var node = parser.parseAssignment(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ASSIGNMENT_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

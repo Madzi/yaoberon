@@ -12,6 +12,6 @@ public class ParseModuleTest extends AbstractDetailedParserSetup {
         var node = parser.parseModule(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.MODULE_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

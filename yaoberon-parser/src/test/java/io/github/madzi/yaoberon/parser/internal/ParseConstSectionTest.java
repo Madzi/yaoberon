@@ -12,6 +12,6 @@ public class ParseConstSectionTest extends AbstractDetailedParserSetup {
         var node = parser.parseConstSection(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.CONST_SECTION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

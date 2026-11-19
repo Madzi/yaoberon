@@ -28,7 +28,7 @@ class ParseContextTest {
     void testBasicAccessors() {
         ParseContext ctx = context("A B");
         assertEquals(3, ctx.tokens().size()); // A, B, EOT
-        assertTrue(ctx.errors().isEmpty());
+        assertTrue(ctx.diagnostics().isEmpty());
         assertEquals(0, ctx.cursor().get());
         assertEquals("test://code", ctx.source().uri());
 
@@ -72,9 +72,9 @@ class ParseContextTest {
     void testReportError() {
         ParseContext ctx = context("A B");
         ctx.reportError("Error at A");
-        assertEquals(1, ctx.errors().size());
-        assertEquals(new Span(0, 1), ctx.errors().get(0).span());
-        assertEquals("Error at A", ctx.errors().get(0).message());
+        assertEquals(1, ctx.diagnostics().size());
+        assertEquals(new Span(0, 1), ctx.diagnostics().get(0).span());
+        assertEquals("Error at A", ctx.diagnostics().get(0).message());
 
         // Advance to end
         ctx.next(); // A
@@ -83,8 +83,8 @@ class ParseContextTest {
         assertTrue(ctx.isAtEnd());
 
         ctx.reportError("Error at EOF");
-        assertEquals(2, ctx.errors().size());
-        assertEquals("Error at EOF", ctx.errors().get(1).message());
+        assertEquals(2, ctx.diagnostics().size());
+        assertEquals("Error at EOF", ctx.diagnostics().get(1).message());
     }
 
     @Test

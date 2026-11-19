@@ -12,6 +12,6 @@ public class ParseElementTest extends AbstractDetailedParserSetup {
         var node = parser.parseElement(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ELEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

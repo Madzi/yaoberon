@@ -12,6 +12,6 @@ public class ParseWhileStatementTest extends AbstractDetailedParserSetup {
         var node = parser.parseWhileStatement(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.WHILE_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

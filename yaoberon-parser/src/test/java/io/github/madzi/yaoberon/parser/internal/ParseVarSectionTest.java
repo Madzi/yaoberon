@@ -12,6 +12,6 @@ public class ParseVarSectionTest extends AbstractDetailedParserSetup {
         var node = parser.parseVarSection(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.VAR_SECTION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

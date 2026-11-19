@@ -12,6 +12,6 @@ public class ParseCaseTest extends AbstractDetailedParserSetup {
         var node = parser.parseCase(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.CASE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

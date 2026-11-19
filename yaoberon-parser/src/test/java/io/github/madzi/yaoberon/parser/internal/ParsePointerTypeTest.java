@@ -12,6 +12,6 @@ public class ParsePointerTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parsePointerType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.POINTER_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

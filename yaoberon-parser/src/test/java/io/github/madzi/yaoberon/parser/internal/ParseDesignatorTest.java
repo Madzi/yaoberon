@@ -12,6 +12,6 @@ public class ParseDesignatorTest extends AbstractDetailedParserSetup {
         var node = parser.parseDesignator(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.DESIGNATOR, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

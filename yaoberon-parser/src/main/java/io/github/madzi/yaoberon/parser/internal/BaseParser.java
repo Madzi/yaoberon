@@ -771,6 +771,6 @@ public class BaseParser implements DetailedParser {
     @Override
     public ParseResult parse(final ParseContext context) {
         GreenNode root = parseModule(context);
-        return new ParseResult(root, context.errors());
+        return new ParseResult(root, context.diagnostics());
     }
 }

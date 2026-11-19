@@ -12,6 +12,6 @@ public class ParseActualParametersTest extends AbstractDetailedParserSetup {
         var node = parser.parseActualParameters(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ACTUAL_PARAMETERS, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

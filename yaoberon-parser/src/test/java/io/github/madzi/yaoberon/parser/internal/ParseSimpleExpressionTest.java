@@ -12,6 +12,6 @@ public class ParseSimpleExpressionTest extends AbstractDetailedParserSetup {
         var node = parser.parseSimpleExpression(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.SIMPLE_EXPRESSION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

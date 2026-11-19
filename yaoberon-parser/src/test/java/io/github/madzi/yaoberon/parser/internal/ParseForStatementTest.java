@@ -12,6 +12,6 @@ public class ParseForStatementTest extends AbstractDetailedParserSetup {
         var node = parser.parseForStatement(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.FOR_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

@@ -12,6 +12,6 @@ public class ParseStatementSequenceTest extends AbstractDetailedParserSetup {
         var node = parser.parseStatementSequence(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.STATEMENT_SEQUENCE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

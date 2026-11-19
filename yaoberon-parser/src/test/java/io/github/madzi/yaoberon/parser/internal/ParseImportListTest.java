@@ -12,6 +12,6 @@ public class ParseImportListTest extends AbstractDetailedParserSetup {
         var node = parser.parseImportList(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.IMPORT_SECTION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

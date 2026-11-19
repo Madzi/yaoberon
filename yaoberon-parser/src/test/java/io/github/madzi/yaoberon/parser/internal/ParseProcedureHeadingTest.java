@@ -12,6 +12,6 @@ public class ParseProcedureHeadingTest extends AbstractDetailedParserSetup {
         var node = parser.parseProcedureHeading(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_HEADING, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

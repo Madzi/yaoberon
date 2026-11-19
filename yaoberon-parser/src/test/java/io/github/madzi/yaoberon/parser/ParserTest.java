@@ -38,7 +38,7 @@ class ParserTest {
         String code = "MODULE EmptyBegin; BEGIN END EmptyBegin.";
         ParseResult result = parse(code);
         assertEquals(SyntaxKind.MODULE_DECLARATION, result.root().kind());
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -53,7 +53,7 @@ class ParserTest {
             END EmptyBranches.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -70,7 +70,7 @@ class ParserTest {
             END ForBy.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -86,7 +86,7 @@ class ParserTest {
             END CaseRange.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -100,7 +100,7 @@ class ParserTest {
             END TypeAliases.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -108,14 +108,14 @@ class ParserTest {
         String code = "MODULE WithBegin; BEGIN x := 1 END WithBegin.";
         ParseResult result = parse(code);
         assertEquals(SyntaxKind.MODULE_DECLARATION, result.root().kind());
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
     void testModuleWithImports() {
         String code = "MODULE WithImports; IMPORT Out, M := Math, In; BEGIN x := 1 END WithImports.";
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -130,7 +130,7 @@ class ParserTest {
             END Consts.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -151,7 +151,7 @@ class ParserTest {
             END Types.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -165,7 +165,7 @@ class ParserTest {
             END Vars.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -208,7 +208,7 @@ class ParserTest {
             END Procs.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -231,7 +231,7 @@ class ParserTest {
             END Statements.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -252,7 +252,7 @@ class ParserTest {
             END IfTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -269,7 +269,7 @@ class ParserTest {
             END CaseTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -285,7 +285,7 @@ class ParserTest {
             END WhileTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -300,7 +300,7 @@ class ParserTest {
             END RepeatTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -314,7 +314,7 @@ class ParserTest {
             END ForTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -337,7 +337,7 @@ class ParserTest {
             END ExprTest.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -349,7 +349,7 @@ class ParserTest {
             END Semicolons.
             """;
         ParseResult result = parse(code);
-        assertTrue(result.syntaxErrors().isEmpty(), "Errors: " + result.syntaxErrors());
+        assertTrue(result.diagnostics().isEmpty(), "Errors: " + result.diagnostics());
     }
 
     @Test
@@ -357,13 +357,13 @@ class ParserTest {
         ParseContext ctxValid = context("myIdent");
         GreenNode valid = detailedParser.parseIdent(ctxValid);
         assertEquals(SyntaxKind.IDENTIFIER, valid.kind());
-        assertTrue(ctxValid.errors().isEmpty());
+        assertTrue(ctxValid.diagnostics().isEmpty());
 
         ParseContext ctxInvalid = context("123");
         GreenNode invalid = detailedParser.parseIdent(ctxInvalid);
         assertEquals(SyntaxKind.ERROR, invalid.kind());
-        assertEquals(1, ctxInvalid.errors().size());
-        assertEquals("Expected identifier", ctxInvalid.errors().get(0).message());
+        assertEquals(1, ctxInvalid.diagnostics().size());
+        assertEquals("Expected identifier", ctxInvalid.diagnostics().get(0).message());
     }
 
     @Test
@@ -376,8 +376,8 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("\"str\"");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseNumber(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
-        assertEquals("Expected number (integer or real)", ctxInvalid.errors().get(0).message());
+        assertEquals(1, ctxInvalid.diagnostics().size());
+        assertEquals("Expected number (integer or real)", ctxInvalid.diagnostics().get(0).message());
     }
 
     @Test
@@ -396,7 +396,7 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("123");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseStrucType(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
@@ -409,7 +409,7 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("123");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseType(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
@@ -421,7 +421,7 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("+");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseRelation(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
@@ -433,7 +433,7 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("*");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseAddOp(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
@@ -445,14 +445,14 @@ class ParserTest {
 
         ParseContext ctxInvalid = context("+");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseMulOperator(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
     void testDetailedParserParseFactorError() {
         ParseContext ctxInvalid = context(";");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseFactor(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
@@ -468,69 +468,69 @@ class ParserTest {
 
         ParseContext ctxInvalid = context(";");
         assertEquals(SyntaxKind.ERROR, detailedParser.parseLabel(ctxInvalid).kind());
-        assertEquals(1, ctxInvalid.errors().size());
+        assertEquals(1, ctxInvalid.diagnostics().size());
     }
 
     @Test
     void testSyntaxErrorsInModule() {
         // Missing module name and punctuation
         ParseResult r1 = parse("NOT_MODULE; END.");
-        assertFalse(r1.syntaxErrors().isEmpty());
+        assertFalse(r1.diagnostics().isEmpty());
 
         // Missing '=' in CONST
         ParseResult r2 = parse("MODULE M; CONST a 1; END M.");
-        assertFalse(r2.syntaxErrors().isEmpty());
+        assertFalse(r2.diagnostics().isEmpty());
 
         // Missing '=' in TYPE
         ParseResult r3 = parse("MODULE M; TYPE T INTEGER; END M.");
-        assertFalse(r3.syntaxErrors().isEmpty());
+        assertFalse(r3.diagnostics().isEmpty());
 
         // Invalid type in TYPE declaration
         ParseResult r3b = parse("MODULE M; TYPE T = 123; END M.");
-        assertFalse(r3b.syntaxErrors().isEmpty());
+        assertFalse(r3b.diagnostics().isEmpty());
 
         // Missing 'OF' in ARRAY
         ParseResult r4 = parse("MODULE M; TYPE A = ARRAY 10 INTEGER; END M.");
-        assertFalse(r4.syntaxErrors().isEmpty());
+        assertFalse(r4.diagnostics().isEmpty());
 
         // Missing ')' in RECORD
         ParseResult r5 = parse("MODULE M; TYPE R = RECORD (Base f: INTEGER END; END M.");
-        assertFalse(r5.syntaxErrors().isEmpty());
+        assertFalse(r5.diagnostics().isEmpty());
 
         // Missing ':' in field list
         ParseResult r6 = parse("MODULE M; TYPE R = RECORD f INTEGER END; END M.");
-        assertFalse(r6.syntaxErrors().isEmpty());
+        assertFalse(r6.diagnostics().isEmpty());
 
         // Missing ':=' in assignment
         ParseResult r7 = parse("MODULE M; BEGIN a 1 END M.");
-        assertFalse(r7.syntaxErrors().isEmpty());
+        assertFalse(r7.diagnostics().isEmpty());
 
         // Missing ':' in CASE
         ParseResult r8 = parse("MODULE M; BEGIN CASE x OF 1 y := 1 END END M.");
-        assertFalse(r8.syntaxErrors().isEmpty());
+        assertFalse(r8.diagnostics().isEmpty());
 
         // Missing ':=' in FOR
         ParseResult r9 = parse("MODULE M; BEGIN FOR i 1 TO 10 DO END END M.");
-        assertFalse(r9.syntaxErrors().isEmpty());
+        assertFalse(r9.diagnostics().isEmpty());
 
         // Missing 'TO' in FOR
         ParseResult r10 = parse("MODULE M; BEGIN FOR i := 1 10 DO END END M.");
-        assertFalse(r10.syntaxErrors().isEmpty());
+        assertFalse(r10.diagnostics().isEmpty());
 
         // Missing ';' in procedure heading
         ParseResult r11 = parse("MODULE M; PROCEDURE P BEGIN END P; END M.");
-        assertFalse(r11.syntaxErrors().isEmpty());
+        assertFalse(r11.diagnostics().isEmpty());
 
         // Missing '(' in formal parameters
         ParseResult r12 = parse("MODULE M; PROCEDURE P ) ; BEGIN END P; END M.");
-        assertFalse(r12.syntaxErrors().isEmpty());
+        assertFalse(r12.diagnostics().isEmpty());
 
         // Missing 'OF' in formal type
         ParseResult r13 = parse("MODULE M; PROCEDURE P(arr: ARRAY INTEGER); BEGIN END P; END M.");
-        assertFalse(r13.syntaxErrors().isEmpty());
+        assertFalse(r13.diagnostics().isEmpty());
 
         // Missing final '.' in module
         ParseResult r14 = parse("MODULE M; END M");
-        assertFalse(r14.syntaxErrors().isEmpty());
+        assertFalse(r14.diagnostics().isEmpty());
     }
 }

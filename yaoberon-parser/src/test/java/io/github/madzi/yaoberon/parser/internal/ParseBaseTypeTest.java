@@ -12,6 +12,6 @@ public class ParseBaseTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseBaseType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.QUALIDENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

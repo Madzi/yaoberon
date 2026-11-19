@@ -10,7 +10,7 @@ class ParseQualidentTest extends AbstractDetailedParserSetup {
     void testParseIdent() {
         var context = context("ident");
         var node = parser.parseQualident(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.QUALIDENT, node.kind());
         Assertions.assertEquals("ident", fromNode(context.source(), node));
@@ -20,7 +20,7 @@ class ParseQualidentTest extends AbstractDetailedParserSetup {
     void testParseQualident() {
         var context = context("prefix.ident");
         var node = parser.parseQualident(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.QUALIDENT, node.kind());
         Assertions.assertEquals("prefix.ident", fromNode(context.source(), node));
@@ -30,7 +30,7 @@ class ParseQualidentTest extends AbstractDetailedParserSetup {
     void testParseLongQualident() {
         var context = context("sub.prefix.ident");
         var node = parser.parseQualident(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.QUALIDENT, node.kind());
         Assertions.assertEquals("sub.prefix", fromNode(context.source(), node));

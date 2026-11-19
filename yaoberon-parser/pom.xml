@@ -25,6 +25,10 @@
         </dependency>
         <dependency>
             <groupId>io.github.madzi</groupId>
+            <artifactId>yaoberon-diagnostic</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.madzi</groupId>
             <artifactId>yaoberon-lexer</artifactId>
         </dependency>
     </dependencies>

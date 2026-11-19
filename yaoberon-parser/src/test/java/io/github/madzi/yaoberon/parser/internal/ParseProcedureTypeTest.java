@@ -12,6 +12,6 @@ public class ParseProcedureTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseProcedureType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

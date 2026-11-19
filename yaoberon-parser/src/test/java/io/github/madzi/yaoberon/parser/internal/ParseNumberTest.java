@@ -12,7 +12,7 @@ public class ParseNumberTest extends AbstractDetailedParserSetup {
         var node = parser.parseNumber(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.INT_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -21,7 +21,7 @@ public class ParseNumberTest extends AbstractDetailedParserSetup {
         var node = parser.parseNumber(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.REAL_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -30,6 +30,6 @@ public class ParseNumberTest extends AbstractDetailedParserSetup {
         var node = parser.parseNumber(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ERROR, node.kind());
-        Assertions.assertFalse(context.errors().isEmpty());
+        Assertions.assertFalse(context.diagnostics().isEmpty());
     }
 }

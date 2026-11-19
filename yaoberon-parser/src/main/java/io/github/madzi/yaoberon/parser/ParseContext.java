@@ -1,5 +1,6 @@
 package io.github.madzi.yaoberon.parser;
 
+import io.github.madzi.yaoberon.diagnostic.Diagnostic;
 import io.github.madzi.yaoberon.lexer.token.Token;
 import io.github.madzi.yaoberon.lexer.token.TokenKind;
 import io.github.madzi.yaoberon.parser.cst.GreenNode;
@@ -12,20 +13,21 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ParseContext {
+
     private final List<Token> tokens;
-    private final List<SyntaxError> errors;
+    private final List<Diagnostic> diagnostics;
     private final AtomicInteger cursor;
     private final SourceFile source;
 
     public ParseContext(final SourceFile source, final List<Token> tokens) {
         this.source = source;
         this.tokens = List.copyOf(tokens);
-        this.errors = new ArrayList<>();
+        this.diagnostics = new ArrayList<>();
         this.cursor = new AtomicInteger(0);
     }
 
     public List<Token> tokens() { return tokens; }
-    public List<SyntaxError> errors() { return errors; }
+    public List<Diagnostic> diagnostics() { return diagnostics; }
     public AtomicInteger cursor() { return cursor; }
     public SourceFile source() { return source; }
     public Token peek() { return tokens.get(cursor.get()); }
@@ -40,9 +42,9 @@ public class ParseContext {
     }
     public boolean isAtEnd() { return cursor.get() >= tokens.size() || peek().isEot(); }
     public GreenNode consume(final SyntaxKind kind) { return new GreenNode.TokenLeaf(kind, next()); }
-    public void reportError(final String message) {
+    public void reportError(final String message, final Object... params) {
         final Token current = isAtEnd() ? tokens.getLast() : peek();
-        errors.add(new SyntaxError(current.span(), message));
+        diagnostics.add(new Diagnostic(Diagnostic.Severity.ERROR, current.span(), message, params));
     }
     public String getSourceText() {
         final Span span = peek().span();

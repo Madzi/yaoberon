@@ -12,6 +12,6 @@ public class ParseVariableDeclarationTest extends AbstractDetailedParserSetup {
         var node = parser.parseVariableDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.VARIABLE_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

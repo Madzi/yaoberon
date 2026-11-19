@@ -12,7 +12,7 @@ public class ParseRealTest extends AbstractDetailedParserSetup {
         var node = parser.parseReal(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.REAL_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -21,6 +21,6 @@ public class ParseRealTest extends AbstractDetailedParserSetup {
         var node = parser.parseReal(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.REAL_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

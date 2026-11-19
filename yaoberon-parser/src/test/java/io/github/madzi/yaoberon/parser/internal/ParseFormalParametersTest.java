@@ -12,6 +12,6 @@ public class ParseFormalParametersTest extends AbstractDetailedParserSetup {
         var node = parser.parseFormalParameters(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.FORMAL_PARAMETERS, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

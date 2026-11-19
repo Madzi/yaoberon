@@ -12,6 +12,6 @@ public class ParseProcedureBodyTest extends AbstractDetailedParserSetup {
         var node = parser.parseProcedureBody(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_BODY, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

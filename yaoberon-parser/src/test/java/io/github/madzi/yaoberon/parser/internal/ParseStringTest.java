@@ -12,7 +12,7 @@ public class ParseStringTest extends AbstractDetailedParserSetup {
         var node = parser.parseString(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.STRING_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -21,6 +21,6 @@ public class ParseStringTest extends AbstractDetailedParserSetup {
         var node = parser.parseString(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.STRING_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

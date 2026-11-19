@@ -12,6 +12,6 @@ public class ParseTypeSectionTest extends AbstractDetailedParserSetup {
         var node = parser.parseTypeSection(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.TYPE_SECTION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

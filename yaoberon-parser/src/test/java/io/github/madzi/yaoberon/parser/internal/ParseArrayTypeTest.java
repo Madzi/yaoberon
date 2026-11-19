@@ -12,6 +12,6 @@ public class ParseArrayTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseArrayType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ARRAY_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

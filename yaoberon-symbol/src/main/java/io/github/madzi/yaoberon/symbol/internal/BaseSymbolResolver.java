@@ -6,14 +6,13 @@ import io.github.madzi.yaoberon.symbol.OberonType;
 import io.github.madzi.yaoberon.symbol.RedNode;
 import io.github.madzi.yaoberon.symbol.Scope;
 import io.github.madzi.yaoberon.symbol.Symbol;
-import io.github.madzi.yaoberon.symbol.SymbolResolver;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class BaseSymbolResolver implements SymbolResolver {
+public class BaseSymbolResolver implements DetailedSymbolResolver {
 
     private final Map<RedNode, Symbol> nodeToSymbol = new HashMap<>();
     private final Map<RedNode, Scope> nodeToScope = new HashMap<>();
@@ -108,6 +107,16 @@ public class BaseSymbolResolver implements SymbolResolver {
         }
     }
 
+    @Override
+    public void resolveTypeDeclaration(final RedNode node) {
+        if (node instanceof RedNode.Composite composite) {
+            for (RedNode child : composite.children()) {
+                registerIdentifier(child, Symbol.Kind.TYPE);
+                break;
+            }
+        }
+    }
+
     private void processTypeDeclaration(final RedNode node) {
         if (node instanceof RedNode.Composite composite) {
             for (RedNode child : composite.children()) {
@@ -161,7 +170,7 @@ public class BaseSymbolResolver implements SymbolResolver {
         if (node instanceof RedNode.Composite composite) {
             for (RedNode child : composite.children()) {
                 if (SyntaxKind.FP_SECTION == child.kind()) {
-                    collectIdentList(findFirstChildOfKind(child, SyntaxKind.IDENTIFIER_LIST), Symbol.Kind.PARAMETER, Optional.of(OberonType.NONE));
+                    collectIdentList(findFirstChildOfKind(child, SyntaxKind.IDENTIFIER_LIST), Symbol.Kind.PARAMETER, OberonType.NONE);
                 }
             }
         }
@@ -187,7 +196,7 @@ public class BaseSymbolResolver implements SymbolResolver {
         }
     }
 
-    private void collectIdentList(RedNode node, Symbol.Kind kind, Optional<OberonType> type) {
+    private void collectIdentList(RedNode node, Symbol.Kind kind, OberonType type) {
         if (node instanceof RedNode.Composite composite) {
             for (RedNode child : composite.children()) {
                 registerIdentifier(child, kind, type);
@@ -196,19 +205,20 @@ public class BaseSymbolResolver implements SymbolResolver {
     }
 
     private void registerIdentifier(final RedNode child, final Symbol.Kind kind) {
-        registerIdentifier(child, kind, Optional.empty());
+        registerIdentifier(child, kind, OberonType.NONE);
     }
 
-    private void registerIdentifier(final RedNode node, final Symbol.Kind kind, final Optional<OberonType> type) {
+    private void registerIdentifier(final RedNode node, final Symbol.Kind kind, final OberonType type) {
         if (!(node instanceof RedNode.Composite composite)) {
             return;
         }
         for (RedNode child : composite.children()) {
             if (SyntaxKind.IDENTIFIER_DEFINITION == child.kind() || SyntaxKind.IDENTIFIER == child.kind()) {
                 String name = extractIdentifierText(child);
+                boolean exported = child.kind() == SyntaxKind.IDENTIFIER_DEFINITION; // FIXME
                 if (!name.isEmpty()) {
-                    Symbol symbol = new Symbol(name, kind, child);
-                    symbol.setType(type.orElse(OberonType.NONE));
+                    Symbol symbol = new Symbol(name, kind, child, exported);
+                    symbol.setType(type);
                     currentScope.declare(symbol);
                     nodeToSymbol.put(child, symbol);
                 }
@@ -224,8 +234,9 @@ public class BaseSymbolResolver implements SymbolResolver {
         for (RedNode child : composite.children()) {
             if (SyntaxKind.IDENTIFIER_DEFINITION == child.kind() || SyntaxKind.IDENTIFIER == child.kind()) {
                 String name = extractIdentifierText(child);
+                boolean exported = child.kind() == SyntaxKind.IDENTIFIER_DEFINITION; // FIXME
                 if (!name.isEmpty()) {
-                    Symbol procSymbol = new Symbol(name, Symbol.Kind.PROCEDURE, child);
+                    Symbol procSymbol = new Symbol(name, Symbol.Kind.PROCEDURE, child, exported);
                     currentScope.declare(procSymbol);
                     nodeToSymbol.put(child, procSymbol);
                 }
@@ -286,10 +297,28 @@ public class BaseSymbolResolver implements SymbolResolver {
                 if (resolved.isPresent() && resolved.get().kind() == Symbol.Kind.TYPE) {
                     yield resolved.get().type();
                 }
-                yield new OberonType.Record(null, typeName); // FIXME
+                yield new OberonType.Record(null, typeName, Map.of()); // FIXME
             }
         };
     }
+
+    // private void processDesignator(final RedNode node) {
+    //     if (!(node instanceof RedNode.Composite composite)) {
+    //         return; // FIXME
+    //     }
+    //     var children = composite.children();
+    //     RedNode head = children.getFirst();
+    //     var found = currentScope.resolve(extractIdentifierText(head));
+    //     if (found.isEmpty()) {
+    //         return; // FIXME
+    //     }
+    //     Symbol sym = found.get();
+    //     nodeToSymbol.put(head, sym);
+    //     if (Symbol.Kind.MODULE == sym.kind() && children.size() > 1 && children.get(1).kind() == SyntaxKind.SELECTOR) {
+    //         RedNode member = selectorIdent(children.get(1)); // FIXME
+    //     }
+    //
+    // }
 
     private void processIdentifierUse(final RedNode useNode) {
         if (nodeToSymbol.containsKey(useNode)) {
@@ -366,7 +395,7 @@ public class BaseSymbolResolver implements SymbolResolver {
     }
 
     private void declareBuiltinType(final Scope scope, final String name, final OberonType type) {
-        Symbol symbol = new Symbol(name, Symbol.Kind.TYPE, null);
+        Symbol symbol = new Symbol(name, Symbol.Kind.TYPE, null, false);
         symbol.setType(type);
         scope.declare(symbol);
     }

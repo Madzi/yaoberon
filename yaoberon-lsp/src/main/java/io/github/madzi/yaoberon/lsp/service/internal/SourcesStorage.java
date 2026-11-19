@@ -61,10 +61,10 @@ public class SourcesStorage {
     public List<Diagnostic> recompileForDiagnostics(final LspSourceFile source) {
         var parseResult = parse(source);
         List<Diagnostic> diagnostics = new ArrayList<>();
-        for (var syntaxError : parseResult.syntaxErrors()) {
-            Position startPos = source.offsetToPosition(syntaxError.span().start());
-            Position endPos = source.offsetToPosition(syntaxError.span().end());
-            diagnostics.add(new Diagnostic(new Range(startPos, endPos), syntaxError.message(), DiagnosticSeverity.Error, "yao"));
+        for (var diagnostic : parseResult.diagnostics()) {
+            Position startPos = source.offsetToPosition(diagnostic.span().start());
+            Position endPos = source.offsetToPosition(diagnostic.span().end());
+            diagnostics.add(new Diagnostic(new Range(startPos, endPos), diagnostic.message(), DiagnosticSeverity.Error, "yao"));
         }
         return diagnostics;
     }

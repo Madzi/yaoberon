@@ -12,6 +12,6 @@ public class ParseTypeDeclarationTest extends AbstractDetailedParserSetup {
         var node = parser.parseTypeDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.TYPE_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

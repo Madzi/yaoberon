@@ -116,13 +116,13 @@ class GreenNodeBuilderTest {
         ParseContext ctx = context("123");
         GreenNodeBuilder builder = new GreenNodeBuilder(ctx);
         builder.expected(TokenKind.INT, c -> c.consume(SyntaxKind.INT_LITERAL), "Expected int");
-        assertTrue(ctx.errors().isEmpty());
+        assertTrue(ctx.diagnostics().isEmpty());
 
         ParseContext ctxError = context("abc");
         GreenNodeBuilder builderError = new GreenNodeBuilder(ctxError);
         builderError.expected(TokenKind.INT, c -> c.consume(SyntaxKind.INT_LITERAL), "Expected int");
-        assertEquals(1, ctxError.errors().size());
-        assertEquals("Expected int", ctxError.errors().get(0).message());
+        assertEquals(1, ctxError.diagnostics().size());
+        assertEquals("Expected int", ctxError.diagnostics().get(0).message());
     }
 
     @Test
@@ -130,13 +130,13 @@ class GreenNodeBuilderTest {
         ParseContext ctx = context(";");
         GreenNodeBuilder builder = new GreenNodeBuilder(ctx);
         builder.expected(TokenKind.SEMICOLON, SyntaxKind.PUNCTUATION, "Expected ';'");
-        assertTrue(ctx.errors().isEmpty());
+        assertTrue(ctx.diagnostics().isEmpty());
 
         ParseContext ctxError = context("123");
         GreenNodeBuilder builderError = new GreenNodeBuilder(ctxError);
         builderError.expected(TokenKind.SEMICOLON, SyntaxKind.PUNCTUATION, "Expected ';'");
-        assertEquals(1, ctxError.errors().size());
-        assertEquals("Expected ';'", ctxError.errors().get(0).message());
+        assertEquals(1, ctxError.diagnostics().size());
+        assertEquals("Expected ';'", ctxError.diagnostics().get(0).message());
     }
 
     @Test
@@ -145,12 +145,12 @@ class GreenNodeBuilderTest {
         GreenNodeBuilder builder = new GreenNodeBuilder(ctx);
         builder.keyword(TokenKind.MODULE);
         builder.punctuation(TokenKind.SEMICOLON, ";");
-        assertTrue(ctx.errors().isEmpty());
+        assertTrue(ctx.diagnostics().isEmpty());
 
         ParseContext ctxError = context("x");
         GreenNodeBuilder builderError = new GreenNodeBuilder(ctxError);
         builderError.keyword(TokenKind.MODULE);
         builderError.punctuation(TokenKind.SEMICOLON, ";");
-        assertEquals(2, ctxError.errors().size());
+        assertEquals(2, ctxError.diagnostics().size());
     }
 }

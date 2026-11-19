@@ -12,7 +12,7 @@ public class ParseIntTest extends AbstractDetailedParserSetup {
         var node = parser.parseInt(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.INT_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -21,6 +21,6 @@ public class ParseIntTest extends AbstractDetailedParserSetup {
         var node = parser.parseInt(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.INT_LITERAL, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

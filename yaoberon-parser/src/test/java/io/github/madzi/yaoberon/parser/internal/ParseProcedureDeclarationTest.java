@@ -12,6 +12,6 @@ public class ParseProcedureDeclarationTest extends AbstractDetailedParserSetup {
         var node = parser.parseProcedureDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

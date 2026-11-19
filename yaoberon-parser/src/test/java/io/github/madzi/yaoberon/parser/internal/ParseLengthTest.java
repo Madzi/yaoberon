@@ -12,6 +12,6 @@ public class ParseLengthTest extends AbstractDetailedParserSetup {
         var node = parser.parseLength(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.EXPRESSION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

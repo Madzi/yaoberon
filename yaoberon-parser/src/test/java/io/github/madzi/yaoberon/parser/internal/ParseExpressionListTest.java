@@ -12,6 +12,6 @@ public class ParseExpressionListTest extends AbstractDetailedParserSetup {
         var node = parser.parseExpressionList(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.EXPRESSION_LIST, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

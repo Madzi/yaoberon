@@ -1,5 +1,7 @@
 package io.github.madzi.yaoberon.symbol;
 
+import java.util.Map;
+
 public sealed interface OberonType {
 
     enum Kind {
@@ -12,7 +14,7 @@ public sealed interface OberonType {
     record Array(OberonType elementType, int length) implements OberonType {
         @Override public Kind kind() { return Kind.ARRAY; }
     }
-    record Record(OberonType baseType, String name) implements OberonType {
+    record Record(OberonType baseType, String name, Map<String, OberonType> members) implements OberonType {
         @Override public Kind kind() { return Kind.RECORD; }
     }
     record Pointer(OberonType baseType) implements OberonType {

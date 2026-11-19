@@ -12,6 +12,6 @@ public class ParseProcedureCallTest extends AbstractDetailedParserSetup {
         var node = parser.parseProcedureCall(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_CALL_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

@@ -12,6 +12,6 @@ public class ParseLabelRangeTest extends AbstractDetailedParserSetup {
         var node = parser.parseLabelRange(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.LABEL_RANGE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

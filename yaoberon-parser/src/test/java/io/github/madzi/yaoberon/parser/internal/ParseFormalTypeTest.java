@@ -12,6 +12,6 @@ public class ParseFormalTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseFormalType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.FORMAL_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

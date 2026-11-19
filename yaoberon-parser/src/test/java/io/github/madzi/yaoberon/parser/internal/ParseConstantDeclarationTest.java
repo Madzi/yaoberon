@@ -12,6 +12,6 @@ public class ParseConstantDeclarationTest extends AbstractDetailedParserSetup {
         var node = parser.parseConstantDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.CONSTANT_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

@@ -12,6 +12,6 @@ public class ParseTermTest extends AbstractDetailedParserSetup {
         var node = parser.parseTerm(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.TERM, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

@@ -50,6 +50,11 @@
             </dependency>
             <dependency>
                 <groupId>io.github.madzi</groupId>
+                <artifactId>yaoberon-diagnostic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.madzi</groupId>
                 <artifactId>yaoberon-lexer</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -158,9 +163,11 @@
     <modules>
         <module>yaoberon-i18n</module>
         <module>yaoberon-source</module>
+        <module>yaoberon-diagnostic</module>
         <module>yaoberon-lexer</module>
         <module>yaoberon-parser</module>
-        <module>yaoberon-symbol</module>
+        <module>yaoberon-symbol</module> <!-- replaced with semantic -->
+        <module>yaoberon-semantic</module>
         <module>yaoberon-ir</module>
         <module>yaoberon-format</module>
         <module>yaoberon-lsp</module>
@@ -258,7 +265,7 @@
                                 </configuration>
                             </execution>
                         </executions>
-                    </plugin>                    
+                    </plugin>
                 </plugins>
             </build>
         </profile>

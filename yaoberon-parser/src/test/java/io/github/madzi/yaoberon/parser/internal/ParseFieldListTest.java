@@ -12,6 +12,6 @@ public class ParseFieldListTest extends AbstractDetailedParserSetup {
         var node = parser.parseFieldList(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.FIELD_LIST, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

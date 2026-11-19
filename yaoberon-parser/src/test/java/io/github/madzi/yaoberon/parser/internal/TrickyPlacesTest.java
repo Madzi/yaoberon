@@ -16,7 +16,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var node = parser.parseDesignator(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.DESIGNATOR, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         assertChildKinds(node, SyntaxKind.IDENTIFIER, SyntaxKind.SELECTOR, SyntaxKind.SELECTOR);
         Assertions.assertTrue(context.isAtEnd());
         Assertions.assertEquals(source.length(), node.textLength());
@@ -29,7 +29,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var node = parser.parseDesignator(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.DESIGNATOR, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         assertChildKinds(node, SyntaxKind.IDENTIFIER, SyntaxKind.SELECTOR, SyntaxKind.SELECTOR, SyntaxKind.SELECTOR, SyntaxKind.SELECTOR);
         Assertions.assertTrue(context.isAtEnd());
         Assertions.assertEquals(source.length(), node.textLength());
@@ -42,7 +42,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var node = parser.parseDesignator(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.DESIGNATOR, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         assertChildKinds(node, SyntaxKind.IDENTIFIER, SyntaxKind.SELECTOR);
         Assertions.assertTrue(context.isAtEnd());
         Assertions.assertEquals(source.length(), node.textLength());
@@ -55,7 +55,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var node = parser.parseVariableDeclaration(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.VARIABLE_DECLARATION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         assertChildKinds(node, SyntaxKind.IDENTIFIER_LIST, SyntaxKind.PUNCTUATION, SyntaxKind.QUALIDENT);
         Assertions.assertTrue(context.isAtEnd());
         Assertions.assertEquals(source.length(), node.textLength());
@@ -67,7 +67,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var context = context(source);
         var node = parser.parseStatement(context);
         Assertions.assertEquals(SyntaxKind.ASSIGNMENT_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         var composite = Assertions.assertInstanceOf(GreenNode.Composite.class, node);
         Assertions.assertEquals(SyntaxKind.DESIGNATOR, composite.children().get(0).kind());
         Assertions.assertTrue(context.isAtEnd());
@@ -80,7 +80,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var context = context(source);
         var node = parser.parseStatement(context);
         Assertions.assertEquals(SyntaxKind.PROCEDURE_CALL_STATEMENT, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertTrue(context.isAtEnd());
     }
 
@@ -89,7 +89,7 @@ class TrickyPlacesTest extends AbstractDetailedParserSetup {
         var source = "a.a.a + 1";
         var context = context(source);
         var node = parser.parseExpression(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertTrue(context.isAtEnd());
         Assertions.assertEquals(source.length(), node.textLength());
     }

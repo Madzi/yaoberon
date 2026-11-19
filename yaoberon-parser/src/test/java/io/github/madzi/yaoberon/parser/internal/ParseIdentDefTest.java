@@ -10,7 +10,7 @@ class ParseIdentDefTest extends AbstractDetailedParserSetup {
     void testParseIdentDef() {
         var context = context("ident");
         var node = parser.parseIdentDef(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.IDENTIFIER_DEFINITION, node.kind());
         Assertions.assertEquals("ident", fromNode(context.source(), node));
@@ -20,7 +20,7 @@ class ParseIdentDefTest extends AbstractDetailedParserSetup {
     void testParseIdentDefExported() {
         var context = context("ident*");
         var node = parser.parseIdentDef(context);
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.IDENTIFIER_DEFINITION, node.kind());
         Assertions.assertEquals("ident*", fromNode(context.source(), node));

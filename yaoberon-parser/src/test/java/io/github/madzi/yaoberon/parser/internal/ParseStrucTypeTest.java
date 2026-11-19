@@ -12,7 +12,7 @@ public class ParseStrucTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseStrucType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.ARRAY_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 
     @Test
@@ -21,6 +21,6 @@ public class ParseStrucTypeTest extends AbstractDetailedParserSetup {
         var node = parser.parseStrucType(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.POINTER_TYPE, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

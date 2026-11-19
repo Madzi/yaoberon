@@ -12,6 +12,6 @@ public class ParseFPSectionTest extends AbstractDetailedParserSetup {
         var node = parser.parseFPSection(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.FP_SECTION, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

@@ -36,7 +36,7 @@ public class BaseFormatter implements Formatter {
         if (null == parse || null == parse.root()) {
             return new FormatResult.ParseFailed();
         }
-        if (null != parse.syntaxErrors() && !parse.syntaxErrors().isEmpty()) {
+        if (null != parse.diagnostics()&& !parse.diagnostics().isEmpty()) {
             return new FormatResult.SyntaxErrors();
         }
         return new FormatResult.Successful(format(source, parse.root()));

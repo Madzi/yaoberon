@@ -12,6 +12,6 @@ public class ParseMulOperatorTest extends AbstractDetailedParserSetup {
         var node = parser.parseMulOperator(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.OPERATOR, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }

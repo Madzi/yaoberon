@@ -1,5 +1,6 @@
 package io.github.madzi.yaoberon.parser;
 
+import io.github.madzi.yaoberon.diagnostic.Diagnostic;
 import io.github.madzi.yaoberon.parser.cst.GreenNode;
 import io.github.madzi.yaoberon.parser.cst.SyntaxKind;
 import io.github.madzi.yaoberon.source.Span;
@@ -14,11 +15,11 @@ class ParseResultTest {
     @Test
     void testParseResultProperties() {
         GreenNode root = GreenNode.Composite.create(SyntaxKind.MODULE_DECLARATION, List.of());
-        SyntaxError error = new SyntaxError(new Span(0, 1), "Error");
+        Diagnostic error = new Diagnostic(Diagnostic.Severity.ERROR, new Span(0, 1), "Error");
         ParseResult result = new ParseResult(root, List.of(error));
 
         assertEquals(root, result.root());
-        assertEquals(List.of(error), result.syntaxErrors());
+        assertEquals(List.of(error), result.diagnostics());
 
         ParseResult same = new ParseResult(root, List.of(error));
         assertEquals(same, result);

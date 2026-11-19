@@ -12,6 +12,6 @@ public class ParseIdentListTest extends AbstractDetailedParserSetup {
         var node = parser.parseIdentList(context);
         Assertions.assertNotNull(node);
         Assertions.assertEquals(SyntaxKind.IDENTIFIER_LIST, node.kind());
-        Assertions.assertTrue(context.errors().isEmpty());
+        Assertions.assertTrue(context.diagnostics().isEmpty());
     }
 }
